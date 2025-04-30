@@ -1,109 +1,120 @@
+package org.example;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Scanner;
 import java.time.format.DateTimeFormatter;
-public class cgpaApp {
-        int n;
-        int totalCredits = 0;
-        double CGPA = 0;
-        double weightedSum = 0;     
-        char grades;
-        String name,regNo;
-    public static void main(String args[]) {
-        //Creating objects
-        Scanner stanley = new Scanner(System.in);
-        DateTimeFormatter Stanf = DateTimeFormatter.ISO_LOCAL_DATE;
-        FileWriter stan;
-        cgpaApp stanv = new cgpaApp();
-        //Creating variables
-        
-    
-        
-        //Greet message and name input
-        System.out.printf("=====================%nThis is a CGPA Calculator%nWARNING!!!%nThe results of this calculation would be saved in a txt file on your computer%n--------%nDeveloped by Stanley Obimma%n");
-        System.out.println("====================");
-        System.out.print("Enter Your name: ");
-        stanv.name = stanley.next();
-        System.out.println("Enter your matric number: ");
-        stanv.regNo = stanley.next();
-        //Initializing n
-        System.out.print("Enter number of courses: ");
-        stanv.n = stanley.nextInt();
-        //Creating Arrays
-        double weighted[] = new double[stanv.n];
-        int credits[] = new int[stanv.n];
-        int gradepoints[] = new int[stanv.n]; 
-        
-        //Looping for user input
-        for(int i=0;i<stanv.n;i++){
-            System.out.println("====================");
-            System.out.printf("<===Course %d===> %n",i+1);
-            
-            System.out.print("Enter credit: ");
-            credits[i] = stanley.nextInt();
-            System.out.print("Enter grade: ");
-            stanv.grades = Character.toUpperCase(stanley.next().charAt(0));
-            switch (stanv.grades) {
-                case 'A':
-                    gradepoints[i] = 5;
+public class Main{
+    static Scanner Stan = new Scanner(System.in);
+    static FileWriter Stanf;
+    static int option,n, i,credits[];
+    static String name, regNo, reply;
+    static char grades;
+    static double gradepoints[], weighted[],weightedSum,CGPA,totalCredits;
+    static boolean hasData = false;
+    public static void main(String[] args) {
+        System.out.printf("Welcome to Stanley's CGPA calculator%n=======************======%nSelect from one of the options below%n");
+        do {
+            System.out.println("=======************======");
+            System.out.println("1. Calculate CGPA");
+            System.out.println("2. Export CGPA to file");
+            System.out.println("3. Exit");
+            System.out.print("Select an option: ");
+            option = Stan.nextInt();
+            switch (option) {
+                case 1:
+                    CalculateCGPA();
                     break;
-                case 'B':
-                    gradepoints[i] = 4;
+                case 2:
+                    exportFile();
                     break;
-                case 'C':
-                    gradepoints[i] = 3;
-                    break;
-                case 'D':
-                    gradepoints[i] = 2;
-                    break;
-                case 'E':
-                    gradepoints[i] = 1;
-                    break;
-                case 'F':
-                    gradepoints[i] = 0;
+                case 3:
+                    System.out.println("Goodbye from Stanley");
                     break;
                 default:
-                    System.out.printf("Invalid grade%nPlease input details on course %d",i+1);
-                    i--;
-                    break;
+                    System.out.println("Invalid input pls try again");
             }
-            weighted[i] = gradepoints[i] * credits[i]; 
-            }
+        } while (option != 3);
+
+    }
+    static void CalculateCGPA(){
+        System.out.print("Enter Your name: ");
+        name = Stan.next();
+        System.out.print("Enter your matric number: ");
+        regNo = Stan.next();
+        System.out.print("Enter number of courses: ");
+        n = Stan.nextInt();
+        weighted = new double[n];
+        credits = new int[n];
+        gradepoints = new double[n];
+        loopInput();
         for(double weight: weighted){
-            stanv.weightedSum += weight;
+            weightedSum += weight;
         }
         for(int credit:credits){
-            stanv.totalCredits += credit;
+            totalCredits += credit;
         }
-        stanv.CGPA = stanv.weightedSum/stanv.totalCredits;
+        CGPA = weightedSum/totalCredits;
         System.out.println("============================");
-        System.out.printf("Your CGPA is %.2f%n",stanv.CGPA);
+        System.out.printf("Your CGPA is %.2f%n",CGPA);
         System.out.println("============================");
-        System.out.println("Do you want to save the file?(Reply with yes or no)");
-        System.out.println("============================");
-        String reply = stanley.next();
-        reply = reply.toLowerCase();
-        //Saving File
-        if("yes".equals(reply)){
-        try{
-            stan = new FileWriter(stanv.name+".txt");
-            stan.write(String.format("==========CGPA REPORT=========%nName: %s%nMatric No.: %s%nCGPA: %.2f%n============== ", stanv.name,stanv.regNo, stanv.CGPA));
-            stan.write(String.format("This result was calculated by Stanley Obimma at:%n%s", Stanf ));
-            stan.close();
-            System.out.printf("Result saved successfully at %s.txt",stanv.name);
-        }
-        catch (IOException e){
-            System.out.print("File not saved");
+        hasData = true;
+    }
+    static void loopInput() {
+        for (i = 0; i < n; i++) {
+            System.out.println("====================");
+            System.out.printf("<===Course %d===> %n", i + 1);
 
+            System.out.print("Enter credit: ");
+            credits[i] = Stan.nextInt();
+            System.out.print("Enter grade: ");
+            grades = Character.toUpperCase(Stan.next().charAt(0));
+            calGrades();
+            weighted[i] = gradepoints[i] * credits[i];
         }
+    }
+    static void calGrades(){
+        switch (grades) {
+            case 'A':
+                gradepoints[i] = 5;
+                break;
+            case 'B':
+                gradepoints[i] = 4;
+                break;
+            case 'C':
+                gradepoints[i] = 3;
+                break;
+            case 'D':
+                gradepoints[i] = 2;
+                break;
+            case 'E':
+                gradepoints[i] = 1;
+                break;
+            case 'F':
+                gradepoints[i] = 0;
+                break;
+            default:
+                System.out.printf("Invalid grade%nPlease input details on course %d", i + 1);
+                i--;
+                break;
         }
-        else if("no".equals(reply))
+    }
+    static void exportFile(){
+        if(hasData){
+            try{
+                Stanf = new FileWriter(name+".txt");
+                Stanf.write(String.format("==========CGPA REPORT=========%nName: %s%nMatric No.: %s%nCGPA: %.2f%n============== ", name,regNo,CGPA));
+                Stanf.write(String.format("This result was calculated by Stanley Obimma at:%n%s", Stanf ));
+                Stanf.close();
+                System.out.printf("Result saved successfully at %s.txt",name);
+            }
+            catch (IOException e){
+                System.out.print("File not saved");
+
+            }
+        }
+        else
         {
-            System.out.print("Thanks for using us...Goodbye!!!");
+            System.out.println("No data to export!!!");
         }
-       
-       
-        
-        
     }
 }
