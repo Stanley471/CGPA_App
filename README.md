@@ -1,5 +1,3 @@
-
-
 # 📚 CGPA Calculator (Java)
 
 ## ✨ Features
@@ -76,3 +74,7 @@ Computer Science Student | University of Nigeria, Nsukka
 Pull requests are welcome! Feel free to open an issue if you want to suggest improvements.
 
 # 🎉 Thanks for checking out my project!
+
+## UPDATES
+1. Added menu functionality
+   - April 30, 25
